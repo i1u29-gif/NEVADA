@@ -1,0 +1,40 @@
+{
+  "name": "nasa-microgravity-combustion-si",
+  "version": "1.0.0",
+  "description": "NASA Space Apps Challenge: Super Intelligence Microgravity Combustion Science Dashboard and Multi-Agent Harness",
+  "type": "module",
+  "main": "src/index.ts",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node src/server/server.ts",
+    "dev": "node --watch src/server/server.ts",
+    "test": "node test/run_all_tests.ts",
+    "test:all": "node test/run_all_tests.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc --declaration --emitDeclarationOnly --outDir dist",
+    "verify": "node scripts/verify.js",
+    "clean": "node -e \"const fs = require('fs'); ['dist', 'coverage'].forEach(d => fs.rmSync(d, { recursive: true, force: true }));\""
+  },
+  "keywords": [
+    "nasa",
+    "space-apps-challenge",
+    "microgravity",
+    "combustion-physics",
+    "fire-safety",
+    "artemis",
+    "iss",
+    "super-intelligence",
+    "zero-dependency",
+    "typescript",
+    "nodejs-24"
+  ],
+  "author": "NASA Space Apps Challenge Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.6.3"
+  }
+}

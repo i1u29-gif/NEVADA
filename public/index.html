@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="Synthetic Intelligence (SI) Assisted Code, PINN Modeling & Visual Simulation">
+  <meta name="si-disclosure" content="Permitted Use of S.I. (Space Apps Policy Page 16-17): Source code, PINN surrogate models, synthetic sensor telemetry, and 60-FPS chamber visualizations were generated/accelerated with Synthetic Intelligence (LLMs, coding generation, and local Edge SI). Includes visible SI-generated watermarks. Zero NASA logos, flags, or official branding elements are used or modified.">
+  <title>Space Apps 2026 // Flame in Freefall — Microgravity Combustion SCADA &amp; Edge SI</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script type="application/ld+json" id="si-metadata-json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Team Nevada (IUH) — Flame in Freefall PSI SCADA & AIoT Edge SI",
+    "applicationCategory": "ScientificSimulationApplication",
+    "creativeWorkStatus": "SI-Generated Code, Synthetic Telemetry Data & Watermarked Visual Simulation",
+    "disambiguatingDescription": "Complies with Space Apps S.I. Policy (Pages 16-17): Uses LLMs, coding generation, and local Physics-Informed Neural Network (PINN) models. All generated visual simulations include a visible SI-GENERATED watermark. Does not use, contain, or modify any NASA logos, flags, or official branding elements."
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ====================================================================
+       TOP HEADER BAR: IUH LOGO + TEAM NEVADA + NAVIGATION TABS
+       ==================================================================== -->
+  <header class="top-header-bar">
+    <div class="header-left-brand">
+      <div class="iuh-corner-box">IUH</div>
+      <div>
+        <div class="brand-row">
+          <span class="team-nevada-badge">TEAM NEVADA</span>
+          <span class="school-name-text">Industrial University of Ho Chi Minh City (Faculty of Electronics) • No NASA Branding Used</span>
+        </div>
+        <h1 class="challenge-title-text">
+          SPACE APPS CHALLENGE 2026 • FLAME IN FREEFALL (PSI SCADA &amp; AIoT EDGE SI)
+        </h1>
+      </div>
+    </div>
+
+    <div class="header-tabs-row">
+      <button class="header-tab-btn active" data-view="scada" type="button">
+        🎛️ 1. SCADA Control Panel
+      </button>
+      <button class="header-tab-btn" data-view="psi_db" type="button">
+        🗄️ 2. PSI Database &amp; TOPSIS
+      </button>
+      <button class="header-tab-btn" data-view="math_spinoff" type="button">
+        📐 3. Algorithms &amp; Math Models
+      </button>
+    </div>
+  </header>
+
+  <main class="scada-content">
+
+    <!-- ====================================================================
+         TAB 1: 3-COLUMN SCADA CONTROL PANEL (DECLUTTERED & BALANCED)
+         ==================================================================== -->
+    <section id="view-scada" class="view-panel active">
+
+      <!-- SUB-CONTROL STRIP: 4 EXPLORATION HABITAT PRESETS + ACTIONS -->
+      <div class="sub-control-strip">
+        <div class="preset-group" id="env-preset-strip">
+          <span class="strip-label">Exploration Habitat:</span>
+          <button class="preset-chip" data-g="0.00" data-o2="21.0" data-psi="14.7" data-fan="10" data-name="ISS Microgravity (0g | 21% O2 | 14.7 psi)" type="button">
+            🛰️ ISS Microgravity (0g | 21% O2 | 14.7 psi)
+          </button>
+          <button class="preset-chip active" data-g="0.16" data-o2="34.0" data-psi="8.2" data-fan="12" data-name="Lunar Base &amp; Rover (0.16g | 34% O2 | 8.2 psi)" type="button">
+            🌕 Lunar Base &amp; Rover (0.16g | 34% O2 | 8.2 psi)
+          </button>
+          <button class="preset-chip" data-g="0.00" data-o2="100.0" data-psi="4.3" data-fan="15" data-name="EVA Spacesuit (0g | 100% O2 | 4.3 psi)" type="button">
+            👩‍🚀 EVA Spacesuit (0g | 100% O2 | 4.3 psi)
+          </button>
+          <button class="preset-chip" data-g="0.38" data-o2="26.0" data-psi="10.2" data-fan="10" data-name="Mars Habitat (0.38g | 26% O2 | 10.2 psi)" type="button">
+            🔴 Mars Habitat (0.38g | 26% O2 | 10.2 psi)
+          </button>
+        </div>
+
+        <div class="strip-right-actions">
+          <button class="inspect-btn" id="btn-open-study-modal" type="button">
+            🔍 PSI Profile: <span id="loaded-study-code">BASS / BASS-II / SPICE</span>
+          </button>
+          <button class="si-inspect-strip-btn" id="btn-open-si-inspect-strip" type="button">
+            🧠 SI Engine Diagnostics
+          </button>
+          <button class="log-popup-btn" id="btn-open-log-modal" type="button">
+            🖥️ Event Logs (<span id="log-count-badge">3</span>)
+          </button>
+        </div>
+      </div>
+
+      <!-- 3-COLUMN NODE-RED SCADA ROW -->
+      <div class="three-cols-row">
+
+        <!-- ==================== COLUMN 1: CONTROL (ACTUATORS & BOUNDARY) ==================== -->
+        <div class="scada-col-card">
+          <div>
+            <h2 class="card-title">Control (Actuators &amp; Boundary)</h2>
+
+            <div class="date-line">
+              <span class="date-line-label">Date (DD/MM/YYYY)</span>
+              <span class="date-line-val" id="clock-date-str">14/11/2026</span>
+            </div>
+
+            <div class="clock-box">
+              <div class="clock-text" id="clock-time-str">13 : 45 : 00</div>
+            </div>
+
+            <div class="mode-switch-row">
+              <span class="mode-switch-label">AUTO/MANUAL (SI Closed-Loop)</span>
+              <button class="toggle-bar on" id="btn-toggle-auto" type="button" aria-label="Toggle Auto Mode">
+                <span class="toggle-knob"></span>
+              </button>
+            </div>
+
+            <button class="blue-btn" id="btn-act-uv" type="button">
+              LED — UV-PLIF COOL-FLAME DETECTOR (<span id="txt-act-uv">OFF</span>)
+            </button>
+
+            <button class="blue-btn" id="btn-act-daft" type="button">
+              BUZZER — DAFT-2 LASER DUST FILTER (<span id="txt-act-daft">OFF</span>)
+            </button>
+
+            <button class="blue-btn" id="btn-act-mist" type="button">
+              RELAY — FINE WATER MIST &amp; HVAC CUT (<span id="txt-act-mist">OFF</span>)
+            </button>
+
+            <!-- EXPERIMENTAL PARAMETER CONTROLS -->
+            <div class="compact-param-box">
+              <div class="compact-param-title">Experimental Boundary Variables:</div>
+
+              <div class="param-tab-strip" id="param-tab-strip">
+                <button class="p-tab active" data-ptab="o2" type="button" id="ptab-btn-o2">O2 (34%)</button>
+                <button class="p-tab" data-ptab="g" type="button" id="ptab-btn-g">g (0.16g)</button>
+                <button class="p-tab" data-ptab="psi" type="button" id="ptab-btn-psi">P (8.2 psi)</button>
+                <button class="p-tab" data-ptab="fan" type="button" id="ptab-btn-fan">V_fan (12)</button>
+                <button class="p-tab" data-ptab="efield" type="button" id="ptab-btn-efield">E (0kV)</button>
+              </div>
+
+              <!-- TAB O2 -->
+              <div class="param-control-body active" id="pbody-o2">
+                <div class="step-chips-wrap" id="chips-o2">
+                  <button class="val-chip" data-val="12.5" type="button">12.5%</button>
+                  <button class="val-chip" data-val="15" type="button">15%</button>
+                  <button class="val-chip" data-val="21" type="button">21%</button>
+                  <button class="val-chip" data-val="30" type="button">30%</button>
+                  <button class="val-chip active" data-val="34" type="button">34%</button>
+                  <button class="val-chip" data-val="50" type="button">50%</button>
+                  <button class="val-chip" data-val="85" type="button">85%</button>
+                  <button class="val-chip" data-val="100" type="button">100%</button>
+                </div>
+                <div class="slider-inline-row">
+                  <input type="range" id="slider-o2" class="scada-slider" min="10" max="100" step="0.5" value="34">
+                </div>
+              </div>
+
+              <!-- TAB G -->
+              <div class="param-control-body" id="pbody-g">
+                <div class="step-chips-wrap" id="chips-g">
+                  <button class="val-chip" data-val="0" type="button">0g</button>
+                  <button class="val-chip" data-val="0.05" type="button">0.05g</button>
+                  <button class="val-chip active" data-val="0.16" type="button">0.16g</button>
+                  <button class="val-chip" data-val="0.38" type="button">0.38g</button>
+                  <button class="val-chip" data-val="0.7" type="button">0.7g</button>
+                  <button class="val-chip" data-val="1" type="button">1g</button>
+                </div>
+                <div class="slider-inline-row">
+                  <input type="range" id="slider-g" class="scada-slider" min="0" max="1" step="0.01" value="0.16">
+                </div>
+              </div>
+
+              <!-- TAB PSI -->
+              <div class="param-control-body" id="pbody-psi">
+                <div class="step-chips-wrap" id="chips-psi">
+                  <button class="val-chip" data-val="4.3" type="button">4.3 psi</button>
+                  <button class="val-chip" data-val="6.5" type="button">6.5 psi</button>
+                  <button class="val-chip active" data-val="8.2" type="button">8.2 psi</button>
+                  <button class="val-chip" data-val="10.2" type="button">10.2 psi</button>
+                  <button class="val-chip" data-val="14.7" type="button">14.7 psi</button>
+                  <button class="val-chip" data-val="16.7" type="button">16.7 psi</button>
+                </div>
+                <div class="slider-inline-row">
+                  <input type="range" id="slider-psi" class="scada-slider" min="4.0" max="17.0" step="0.1" value="8.2">
+                </div>
+              </div>
+
+              <!-- TAB FAN -->
+              <div class="param-control-body" id="pbody-fan">
+                <div class="step-chips-wrap" id="chips-fan">
+                  <button class="val-chip" data-val="0" type="button">0 cm/s</button>
+                  <button class="val-chip" data-val="5" type="button">5 cm/s</button>
+                  <button class="val-chip active" data-val="12" type="button">12 cm/s</button>
+                  <button class="val-chip" data-val="20" type="button">20 cm/s</button>
+                  <button class="val-chip" data-val="35" type="button">35 cm/s</button>
+                  <button class="val-chip" data-val="55" type="button">55 cm/s</button>
+                </div>
+                <div class="slider-inline-row">
+                  <input type="range" id="slider-fan" class="scada-slider" min="0" max="60" step="1" value="12">
+                </div>
+              </div>
+
+              <!-- TAB E-FIELD -->
+              <div class="param-control-body" id="pbody-efield">
+                <div class="step-chips-wrap" id="chips-efield">
+                  <button class="val-chip active" data-val="0" type="button">0 kV</button>
+                  <button class="val-chip" data-val="2.5" type="button">2.5 kV</button>
+                  <button class="val-chip" data-val="5" type="button">5 kV</button>
+                  <button class="val-chip" data-val="6.5" type="button">6.5 kV</button>
+                  <button class="val-chip" data-val="8.5" type="button">8.5 kV</button>
+                  <button class="val-chip" data-val="10" type="button">10 kV</button>
+                </div>
+                <div class="slider-inline-row">
+                  <input type="range" id="slider-efield" class="scada-slider" min="0" max="10" step="0.5" value="0">
+                </div>
+              </div>
+
+              <!-- FUEL & SAMPLE GEOMETRY SELECTOR -->
+              <div class="fuel-row-box">
+                <div class="compact-param-title">Fuel &amp; Sample Geometry:</div>
+                <div class="step-chips-wrap" id="fuel-selector-strip">
+                  <button class="val-chip active" data-fuel="pmma_rod" type="button">PMMA Slab</button>
+                  <button class="val-chip" data-fuel="heptane_droplet" type="button">Heptane Droplet</button>
+                  <button class="val-chip" data-fuel="methane_counterflow" type="button">Methane Gas</button>
+                  <button class="val-chip" data-fuel="cotton_fabric" type="button">Cotton Fabric</button>
+                  <button class="val-chip" data-fuel="filter_dust" type="button">Dust + Filter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEMI-CIRCULAR GAUGE 1: TEMPERATURE & FLAME SPREAD RATE -->
+          <div class="gauge-section">
+            <div class="gauge-caption">🌡️ Shell Temp &amp; Flame Spread Rate (Vf)</div>
+            <div class="semi-gauge-box">
+              <div class="semi-gauge-arc" id="arc-temp"></div>
+              <div class="needle-wrap" id="needle-temp">
+                <div class="needle-pin"></div>
+              </div>
+              <div class="needle-hub"></div>
+              <div class="gauge-readout">
+                <div class="gauge-big-num" id="gauge-temp-val">37.2 °C</div>
+                <div class="gauge-small-unit" id="gauge-vf-val">Vf: 4.12 mm/s</div>
+              </div>
+            </div>
+            <div class="gauge-scale">
+              <span class="gauge-scale-txt">0</span>
+              <span class="gauge-scale-txt">50</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== COLUMN 2: STATUS, CIR/MSG CHAMBER & EDGE SI ==================== -->
+        <div class="scada-col-card">
+          <div>
+            <div class="col-header-row">
+              <h2 class="card-title">Status &amp; Combustion Chamber</h2>
+              <span class="facility-small-tag" id="badge-facility">MSG (Microgravity Science Glovebox)</span>
+            </div>
+
+            <div class="status-list">
+              <div class="status-item">
+                <span class="status-name">Control Mode</span>
+                <span class="status-val" id="status-mode-txt">⚙️ Auto (SI Closed-Loop)</span>
+              </div>
+
+              <div class="status-item">
+                <span class="status-name">LED (UV-PLIF OH* Detector)</span>
+                <div class="status-indicator">
+                  <span class="status-dot off" id="dot-uv"></span>
+                  <span class="status-val" id="status-uv-txt">OFF</span>
+                </div>
+              </div>
+
+              <div class="status-item">
+                <span class="status-name">BUZZER (DAFT-2 Dust Filter)</span>
+                <div class="status-indicator">
+                  <span class="status-dot off" id="dot-daft"></span>
+                  <span class="status-val" id="status-daft-txt">OFF</span>
+                </div>
+              </div>
+
+              <div class="status-item">
+                <span class="status-name">RELAY (Water Mist &amp; Fan Cut)</span>
+                <div class="status-indicator">
+                  <span class="status-dot off" id="dot-mist"></span>
+                  <span class="status-val" id="status-mist-txt">OFF</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- CIR/MSG COMBUSTION CHAMBER (60-FPS CANVAS + 4 TRIGGERS) -->
+            <div class="chamber-box">
+              <div class="chamber-header-strip">
+                <span class="chamber-header-txt" id="chamber-regime-title">PARTIAL-G BUOYANT PLUME (0.16g)</span>
+                <span class="phase-badge" id="chamber-phase-badge">HOT FLAME (1655 K)</span>
+              </div>
+
+              <div class="chamber-canvas-wrap">
+                <canvas id="chamber-canvas" width="520" height="175"></canvas>
+                <div class="si-watermark-badge" id="si-canvas-watermark">
+                  WATERMARK: SI-GENERATED SIMULATION • NO NASA BRANDING
+                </div>
+
+                <div class="dust-banner" id="banner-dust" style="display: none;">
+                  ▒▒ Regolith Dust: 40 mg/m³ (Filtered by DAFT-2) ▒▒
+                </div>
+
+                <div class="mist-banner" id="banner-mist" style="display: none;">
+                  💧 ISS Fine Water Mist (≤100 µm) + Quiescent HVAC Cutoff (V_fan = 0) 💧
+                </div>
+
+                <div class="burner-holder-bar" id="chamber-bottom-metrics">
+                  V_buoyant: 7.1 cm/s | V_eff: 14.0 cm/s | q_rad: 34.6 kW/m²
+                </div>
+              </div>
+
+              <div class="chamber-triggers">
+                <button class="trig-btn trig-hot" id="btn-trig-hot" type="button">🔥 Ignite Flame</button>
+                <button class="trig-btn trig-cool" id="btn-trig-cool" type="button">👻 Cool Flame</button>
+                <button class="trig-btn trig-dust" id="btn-trig-dust" type="button">🌪️ Inject Dust</button>
+                <button class="trig-btn trig-n2" id="btn-trig-n2" type="button">❄️ N2 Purge ≤ MOC</button>
+              </div>
+            </div>
+
+            <!-- LOCAL AIoT EDGE SI PANEL (AETHER-EDGE-PINN) -->
+            <div class="edge-si-panel">
+              <div class="edge-si-header">
+                <span class="edge-si-title">🧠 LOCAL AIoT EDGE SI (AETHER-EDGE-PINN)</span>
+                <span class="edge-si-badge" id="edge-si-status-badge">4-ALGO VERIFIED</span>
+              </div>
+              <div class="edge-si-metrics-row">
+                <div class="edge-si-cell">
+                  <span class="edge-si-cell-label">PINN Residual</span>
+                  <span class="edge-si-cell-val" id="si-pinn-val">0.0019</span>
+                </div>
+                <div class="edge-si-cell">
+                  <span class="edge-si-cell-label">CUSUM Drift</span>
+                  <span class="edge-si-cell-val" id="si-cusum-val">0.34σ</span>
+                </div>
+                <div class="edge-si-cell">
+                  <span class="edge-si-cell-label">Maha OOD</span>
+                  <span class="edge-si-cell-val" id="si-maha-val">1.45</span>
+                </div>
+                <div class="edge-si-cell">
+                  <span class="edge-si-cell-label">Conformal 95%</span>
+                  <span class="edge-si-cell-val" id="si-conf-val">±2.1%</span>
+                </div>
+              </div>
+              <div class="edge-si-diag" id="edge-si-diag-text">
+                [EDGE SI] Monitoring 0.16g combustion chamber — Lunar flammability peak alert at 34% O2.
+              </div>
+              <div class="edge-si-action-row">
+                <button class="si-inspect-btn" id="btn-open-si-inspect" type="button">
+                  🔍 Inspect SI Engine Operation &amp; Diagnostics
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- SEMI-CIRCULAR GAUGE 2: FIRE RISK INDEX & MOC THRESHOLD -->
+          <div class="gauge-section">
+            <div class="gauge-caption">💧 Fire Risk Index &amp; MOC Threshold (%)</div>
+            <div class="semi-gauge-box">
+              <div class="semi-gauge-arc" id="arc-risk"></div>
+              <div class="needle-wrap" id="needle-risk">
+                <div class="needle-pin"></div>
+              </div>
+              <div class="needle-hub"></div>
+              <div class="gauge-readout">
+                <div class="gauge-big-num" id="gauge-risk-val">68.5%</div>
+                <div class="gauge-small-unit" id="gauge-moc-val">MOC: 13.9% O2</div>
+              </div>
+            </div>
+            <div class="gauge-scale">
+              <span class="gauge-scale-txt">0</span>
+              <span class="gauge-scale-txt">100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== COLUMN 3: TELEMETRY CHARTS & PREDICTIVE FORECAST ==================== -->
+        <div class="scada-col-card">
+          <div>
+            <h2 class="card-title">Telemetry &amp; Predictive Curves</h2>
+
+            <!-- CHART 1: REAL-TIME CHAMBER SHELL TEMPERATURE -->
+            <div class="graph-container">
+              <div class="graph-title">Chamber Shell Temperature (°C - Real-time)</div>
+              <div class="graph-legend-row">
+                <span class="legend-line"></span>
+                <span class="graph-legend-txt" id="legend-qrad-txt">
+                  Shell Temp (°C) | Radiative Flux q_rad: 34.6 kW/m²
+                </span>
+              </div>
+
+              <div class="plot-grid">
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">50</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">40</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">30</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">20</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">10</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">0</span><div class="h-grid-line"></div></div>
+
+                <div class="bars-layer" id="chart-temp-bars"></div>
+              </div>
+
+              <div class="x-ticks-row" id="chart-temp-xticks"></div>
+            </div>
+
+            <!-- CHART 2: FLAME SPREAD RATE VS. GRAVITY -->
+            <div class="graph-container" style="margin-top: 10px;">
+              <div class="graph-title">
+                Flame Spread Rate vs. Gravity Curve (Click bar to select g)
+              </div>
+              <div class="graph-legend-row">
+                <span class="legend-line red"></span>
+                <span class="graph-legend-txt" id="legend-lunar-peak-txt">
+                  Worst-case hazard peak at 0.16g Lunar gravity (4.86 mm/s)
+                </span>
+              </div>
+
+              <div class="plot-grid" style="height: 105px;">
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">6</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">4</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">2</span><div class="h-grid-line"></div></div>
+                <div class="h-grid-line-wrap"><span class="y-tick-txt">0</span><div class="h-grid-line"></div></div>
+
+                <div class="bars-layer" id="chart-gravity-bars"></div>
+              </div>
+
+              <div class="x-ticks-row" id="chart-gravity-xticks"></div>
+            </div>
+
+            <!-- CHART 3: +60S PREDICTIVE HORIZON -->
+            <div class="graph-container" style="margin-top: 10px;">
+              <div class="graph-title">
+                AIoT Edge SI +60-Second Predictive Horizon (SCRI &amp; Temp)
+              </div>
+              <div class="forecast-svg-box">
+                <svg id="predictive-horizon-svg" viewBox="0 0 380 92" preserveAspectRatio="none"></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 2: PSI OPEN-SCIENCE DATABASE & TOPSIS RANKING
+         ==================================================================== -->
+    <section id="view-psi_db" class="view-panel">
+      <div class="sub-control-strip">
+        <div class="preset-group" id="topsis-habitat-strip">
+          <span class="strip-label">TOPSIS Ranking by Target Habitat:</span>
+          <button class="preset-chip active" data-hab="Lunar" type="button">
+            🌕 Lunar Base &amp; Rover (8.2 psi | 34% O2 | 0.16g)
+          </button>
+          <button class="preset-chip" data-hab="Spacesuit" type="button">
+            👩‍🚀 EVA Spacesuit (4.3 psi | 100% O2)
+          </button>
+          <button class="preset-chip" data-hab="ISS" type="button">
+            🛰️ ISS Cabin (14.7 psi | 21% O2 | 0g)
+          </button>
+          <button class="preset-chip" data-hab="Mars" type="button">
+            🔴 Mars Base (10.2 psi | 26% O2 | 0.38g)
+          </button>
+        </div>
+
+        <button class="export-green-btn" id="btn-export-csv" type="button">
+          ⬇️ Export Database (.CSV)
+        </button>
+      </div>
+
+      <!-- 7 CORE PSI INVESTIGATION CLUSTER CARDS -->
+      <div class="psi-cards-grid" id="psi-cards-grid"></div>
+
+      <!-- FULL 26-INVESTIGATION CATALOG TABLE FROM EXCEL -->
+      <div class="data-table-card">
+        <h3 class="card-title">
+          📊 Complete Catalog of 26 Experimental Datasets (NASA_DATASET_ANALYZED_V2.xlsx)
+        </h3>
+        <div class="table-scroll">
+          <table class="scada-table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Investigation Dataset Title</th>
+                <th>Category</th>
+                <th>Facility</th>
+                <th>Gravity (g)</th>
+                <th>O2 (%)</th>
+                <th>Pressure (kPa)</th>
+                <th>TOPSIS</th>
+              </tr>
+            </thead>
+            <tbody id="excel-catalog-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 12 SPACECRAFT MATERIALS TOPSIS SAFETY TABLE -->
+      <div class="data-table-card">
+        <h3 class="card-title">
+          🛡️ Flammability &amp; Safety Ranking of 12 Spacecraft Materials (STD-6001 Reference)
+        </h3>
+        <div class="table-scroll">
+          <table class="scada-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Spacecraft Material</th>
+                <th>Category</th>
+                <th>LOI (% O2)</th>
+                <th>0g Burn Rate (mm/s)</th>
+                <th>CO Toxicity</th>
+                <th>TOPSIS Score</th>
+              </tr>
+            </thead>
+            <tbody id="material-topsis-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TAB 3: CORE MATHEMATICAL MODELS, HISTORICAL LESSONS & EARTH SPIN-OFFS
+         ==================================================================== -->
+    <section id="view-math_spinoff" class="view-panel">
+      <div class="scada-formulas-panel" style="margin-top: 0; margin-bottom: 12px;">
+        <div class="formula-section-header">
+          <span class="formula-main-title">📐 Physical Equations &amp; Edge SI Mathematical Models (Live Telemetry Evaluation)</span>
+          <span class="formula-badge">EDGE AI INTEGRATED</span>
+        </div>
+
+        <div class="three-cols-row" style="grid-template-columns: repeat(2, minmax(0, 1fr));">
+          <!-- 1. MICROGRAVITY COMBUSTION PHYSICS -->
+          <div class="formula-card" style="margin-bottom: 0;">
+            <div class="formula-sub-title">1. Microgravity &amp; Partial-Gravity Combustion Physics</div>
+            <div class="formula-item">
+              <div class="formula-label">• Droplet Evaporation &amp; Burning Rate Law (d²-law Droplet Burning):</div>
+              <div class="formula-math">d²(t) = d₀² − K · t &nbsp;|&nbsp; K = [8k_g / (ρ_l · c_{p,g})] · ln(1 + B)</div>
+              <div class="formula-dynamic" id="formula-live-d2">K = 0.84 mm²/s (Quiescent Spherical Flame)</div>
+            </div>
+            <div class="formula-item">
+              <div class="formula-label">• Soot Radiative Heat Loss (Soot Radiative Energy Loss):</div>
+              <div class="formula-math">q̇_rad = 4σ · κ_p · (T_f⁴ − T_∞⁴) &nbsp;|&nbsp; κ_p = C_s · f_v · T_f</div>
+              <div class="formula-dynamic" id="formula-live-qrad">q̇_rad = 34.6 kW/m² (Cool Flame Radiative Transition)</div>
+            </div>
+            <div class="formula-item">
+              <div class="formula-label">• Buoyant &amp; Forced Convective Velocity (Damköhler Scaling):</div>
+              <div class="formula-math">V_b = 32·√(g/g₀)·(P/14.7) &nbsp;|&nbsp; V_eff = √((V_b + V_ion)² + V_fan²)</div>
+              <div class="formula-dynamic" id="formula-live-result">V_f = V₀ · (O2/21)^1.65 · (P/14.7)^0.45 · Φ(V_eff) = 4.12 mm/s</div>
+            </div>
+          </div>
+
+          <!-- 2. EDGE SI MATHEMATICAL MODELS -->
+          <div class="formula-card" style="margin-bottom: 0;">
+            <div class="formula-sub-title">2. Edge SI Mathematical Models (PINN &amp; Ensemble Loss)</div>
+            <div class="formula-item">
+              <div class="formula-label">• Energy Conservation PDE Residual (PINN Residual):</div>
+              <div class="formula-math">ℒ_PINN(θ) = λ_data·MSE(T, T̂) + λ_pde·‖ℛ_PDE‖²</div>
+              <div class="formula-math">ℛ_PDE = | ρ·c_p·(∂T̂/∂t) − k·∇²T̂ − ω̇_T + q̇_rad | ≤ ε</div>
+              <div class="formula-dynamic" id="formula-live-pinn">ℛ_PDE = 0.0019 (Energy Conservation Error ≤ 10⁻³)</div>
+            </div>
+            <div class="formula-item">
+              <div class="formula-label">• Total Multi-Model Objective Function (Ensemble Loss):</div>
+              <div class="formula-math">ℒ_Ensemble = w₁·ℒ_PINN + w₂·ℒ_iForest + w₃·ℒ_DBN + γ·‖θ‖²</div>
+              <div class="formula-dynamic" id="formula-live-ensemble">ℒ_Ensemble = 0.0142 | Latency &lt; 0.5ms (Edge Invariant)</div>
+            </div>
+            <div class="formula-item">
+              <div class="formula-label">• Recursive State Estimation &amp; Conformal 95% Interval:</div>
+              <div class="formula-math">x̂_{t+1|t} = f_SI(x̂_t, u_t) + K_t·(y_t − h(x̂_t)) &nbsp;|&nbsp; I_95% = [ŷ ± 1.96·σ]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-cols-row">
+
+        <!-- COLUMN 1: SPACEFLIGHT LESSONS & EARTH SPIN-OFFS -->
+        <div class="scada-col-card">
+          <div>
+            <h2 class="card-title">Spaceflight Lessons &amp; Earth Spin-Offs</h2>
+
+            <div class="math-block">
+              <div class="math-heading">🚀 Apollo 1 (1967) — High-Pressure 100% O2 Lesson</div>
+              <div class="math-body">
+                The tragic cabin fire in a 100% O2, 16.7 psi atmosphere led directly to strict STD-6001 material flammability testing and reduced-pressure mixed-gas exploration atmospheres.
+              </div>
+            </div>
+
+            <div class="math-block">
+              <div class="math-heading">💧 ISS Fine Water Mist Suppression</div>
+              <div class="math-body">
+                Ultra-fine water droplets (≤ 100 µm) rapidly absorb radiative heat and attenuate flame propagation without damaging sensitive avionics, now protecting terrestrial data centers and archives.
+              </div>
+            </div>
+
+            <div class="math-block">
+              <div class="math-heading">🔦 Multi-Wavelength Smoke vs. Dust Discrimination (DAFT-2)</div>
+              <div class="math-body">
+                Dual-wavelength laser scattering ratios developed in SAME and DAFT-2 distinguish true pyrolysis smoke aggregates from planetary Regolith dust, eliminating false alarms in mines and cleanrooms.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: S.I. COMPLIANCE & DISCLOSURE BAR -->
+        <div class="si-compliance-bar" id="si-compliance-bar">
+          <div class="si-compliance-top">
+            <div class="si-compliance-title-wrap">
+              <span class="si-compliance-badge">PERMITTED USE OF S.I. &amp; WATERMARK POLICY (PAGE 16–17)</span>
+              <span class="si-compliance-title">
+                📋 Synthetic Intelligence (S.I.) Tool Utilization &amp; Watermark Disclosure:
+              </span>
+            </div>
+            <div class="si-dropdown-wrap">
+              <label for="si-usage-dropdown" class="si-dropdown-label">Where &amp; How S.I. Tools Were Utilized:</label>
+              <select id="si-usage-dropdown" class="si-usage-select">
+                <option value="code_gen">1. LLMs &amp; Coding Generation — Monochrome SCADA Architecture &amp; E2E Test Suite</option>
+                <option value="edge_pinn">2. Foundational &amp; Edge SI (AETHER-PINN) — 4-Algorithm 1Hz Live Sensor Verification</option>
+                <option value="visual_sim">3. SI-Generated Visual Simulation — 60-FPS Chamber Canvas with Visible Watermark</option>
+                <option value="psi_data">4. Data &amp; Metadata Structuring — 26 Open-Science PSI Records &amp; JSON-LD Metadata</option>
+              </select>
+            </div>
+          </div>
+          <div class="si-compliance-detail" id="si-usage-detail-text">
+            S.I. tools (LLMs &amp; Coding Generation) were utilized to structure the Monochrome SCADA architecture, optimize TypeScript/JS modules, and verify the automated E2E test suite.
+          </div>
+          <div class="si-compliance-meta">
+            <strong>✓ Considerations About S.I. Compliance:</strong> (1) All SI-generated visual simulations include a visible watermark <code>[WATERMARK: SI-GENERATED SIMULATION]</code>; (2) Generated code and synthetic data explicitly acknowledge S.I. generation in descriptive text and HTML/JSON-LD metadata; (3) This project <strong>does not use, contain, or modify any NASA logos, flags, or official branding elements</strong>.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODAL 1: PSI INVESTIGATION DETAIL POPUP
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-study">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-header-title" id="modal-study-title">📋 Open-Science PSI Dataset Profile</div>
+        <button class="modal-close-icon" id="btn-close-study-modal" type="button">✕</button>
+      </div>
+      <div class="modal-sub-title" id="modal-study-subtitle"></div>
+      <div class="modal-grid" id="modal-study-body"></div>
+      <div class="modal-footer-btns">
+        <button class="modal-primary-btn" id="btn-modal-load-scada" type="button">
+          ⚡ LOAD THIS EXPERIMENT PROFILE INTO SCADA
+        </button>
+        <button class="modal-close-btn" id="btn-close-study-modal-2" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: SCADA EVENT LOGS POPUP
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-logs">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-header-title">🖥️ SCADA Operational &amp; Autonomous Event Logs</div>
+        <button class="modal-close-icon" id="btn-close-log-modal" type="button">✕</button>
+      </div>
+      <div class="terminal-popup-box" id="terminal-logs-list"></div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+        <button class="modal-close-btn" id="btn-close-log-modal-2" type="button">Close Logs</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: SI ENGINE DIAGNOSTIC INSPECTOR
+       ==================================================================== -->
+  <div class="modal-backdrop" id="modal-si-inspect">
+    <div class="modal-window modal-window-large">
+      <div class="modal-header">
+        <div class="modal-header-title">
+          🧠 Edge System Identification (SI) Operational Diagnostics
+        </div>
+        <button class="modal-close-icon" id="btn-close-si-inspect" type="button">✕</button>
+      </div>
+
+      <div class="si-inspect-banner">
+        <div class="si-inspect-meta-pill">Model: <strong id="si-inspect-model-id">AETHER-EDGE-PINN-v2.4</strong></div>
+        <div class="si-inspect-meta-pill">Architecture: <strong id="si-inspect-architecture">PINN + 64-Tree iForest + Forward DBN</strong></div>
+        <div class="si-inspect-meta-pill">Inference Latency: <strong id="si-inspect-latency">&lt; 0.5 ms</strong></div>
+        <div class="si-inspect-meta-pill">Comms Delay Bypassed: <strong id="si-inspect-comms-bypassed">2.6s (Lunar) / 24m (Mars)</strong></div>
+      </div>
+
+      <div class="si-inspect-grid">
+        <!-- BLOCK 1: 4 MATHEMATICAL VERIFICATION SIGNALS -->
+        <div class="si-diag-card">
+          <div class="si-diag-card-title">1. Mathematical Verification Signals</div>
+          <div class="si-diag-signal-row">
+            <div class="si-signal-box">
+              <span class="si-signal-label">PINN PDE Residual</span>
+              <span class="si-signal-num" id="si-inspect-pinn-residual">0.0019</span>
+              <span class="si-signal-tag pass" id="si-inspect-pinn-tag">✓ CONVERGED (&lt; 0.005)</span>
+            </div>
+            <div class="si-signal-box">
+              <span class="si-signal-label">CUSUM Drift Score</span>
+              <span class="si-signal-num" id="si-inspect-cusum-drift">0.34σ</span>
+              <span class="si-signal-tag pass" id="si-inspect-cusum-tag">✓ STABLE (&lt; 1.50σ)</span>
+            </div>
+            <div class="si-signal-box">
+              <span class="si-signal-label">Mahalanobis OOD Dist</span>
+              <span class="si-signal-num" id="si-inspect-maha-ood">1.45</span>
+              <span class="si-signal-tag pass" id="si-inspect-maha-tag">✓ IN-DISTRIBUTION</span>
+            </div>
+            <div class="si-signal-box">
+              <span class="si-signal-label">Conformal 95% Coverage</span>
+              <span class="si-signal-num" id="si-inspect-conformal-interval">±2.1%</span>
+              <span class="si-signal-tag pass" id="si-inspect-conformal-tag">✓ CALIBRATED</span>
+            </div>
+          </div>
+          <div class="si-diag-formula-summary">
+            ℛ_PDE = |ρ c_p (∂T̂/∂t) − k ∇²T̂ − ω̇_T + q̇_rad| | D_M = √((x − μ)ᵀ Σ⁻¹ (x − μ))
+          </div>
+        </div>
+
+        <!-- BLOCK 2: DBN BAYESIAN ARBITRATION POSTERIORS -->
+        <div class="si-diag-card">
+          <div class="si-diag-card-title">2. Dynamic Bayesian Network Posteriors (Hazard State Arbitration)</div>
+          <div class="si-bayes-bars">
+            <div class="si-bayes-row">
+              <span class="si-bayes-name">Open Flame (OPEN_FIRE):</span>
+              <div class="si-bayes-track"><div class="si-bayes-fill open-fire" id="si-inspect-bayes-openfire-bar" style="width: 91.7%;"></div></div>
+              <span class="si-bayes-val" id="si-inspect-bayes-openfire-val">91.7%</span>
+            </div>
+            <div class="si-bayes-row">
+              <span class="si-bayes-name">Smoldering Pyrolysis (SMOLDER):</span>
+              <div class="si-bayes-track"><div class="si-bayes-fill smolder" id="si-inspect-bayes-smolder-bar" style="width: 4.2%;"></div></div>
+              <span class="si-bayes-val" id="si-inspect-bayes-smolder-val">4.2%</span>
+            </div>
+            <div class="si-bayes-row">
+              <span class="si-bayes-name">Sensor Fault / Dust (DUST):</span>
+              <div class="si-bayes-track"><div class="si-bayes-fill dust" id="si-inspect-bayes-dust-bar" style="width: 4.1%;"></div></div>
+              <span class="si-bayes-val" id="si-inspect-bayes-dust-val">4.1%</span>
+            </div>
+            <div class="si-bayes-row">
+              <span class="si-bayes-name">Nominal Cabin (NOMINAL):</span>
+              <div class="si-bayes-track"><div class="si-bayes-fill nominal" id="si-inspect-bayes-nominal-bar" style="width: 0.01%;"></div></div>
+              <span class="si-bayes-val" id="si-inspect-bayes-nominal-val">0.01%</span>
+            </div>
+          </div>
+          <div class="si-rationale-box" id="si-inspect-bayes-rationale">
+            CONFIRMED PARTIAL-GRAVITY OPEN FLAME: u_buoy active, close louvers, purge clean agent.
+          </div>
+        </div>
+
+        <!-- BLOCK 3: ISOLATION FOREST & AIOT MESH TELEMETRY -->
+        <div class="si-diag-card">
+          <div class="si-diag-card-title">3. Isolation Forest Anomaly Detection (64 Trees) &amp; AIoT Sensor Mesh</div>
+          <div class="si-iforest-row">
+            <div>Anomaly Score: <strong id="si-inspect-iforest-score">0.897</strong> / 1.000</div>
+            <div>Dominant Trigger Channel: <strong id="si-inspect-iforest-channel">CO Electrochemical (ppm)</strong></div>
+          </div>
+          <div class="si-aiot-table-wrap">
+            <table class="si-mini-table">
+              <thead>
+                <tr>
+                  <th>AIoT Node</th>
+                  <th>Cabin Sector</th>
+                  <th>Status</th>
+                  <th>CO (ppm)</th>
+                  <th>Obscuration (%/m)</th>
+                  <th>Confidence</th>
+                </tr>
+              </thead>
+              <tbody id="si-inspect-aiot-nodes-table">
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- BLOCK 4: CLOSED-LOOP EDGE SI ACTUATORS -->
+        <div class="si-diag-card">
+          <div class="si-diag-card-title">4. Closed-Loop Autonomous Actuator Commands</div>
+          <div class="si-actuators-list" id="si-inspect-actuators-list">
+          </div>
+        </div>
+      </div>
+
+      <div class="si-inspect-footer">
+        <button class="si-selftest-btn" id="btn-run-si-selftest" type="button">
+          ⚡ Run Invariant &amp; SI Engine Self-Test
+        </button>
+        <span class="si-selftest-status" id="si-selftest-status">SI Engine ready for invariant verification.</span>
+        <button class="modal-close-btn" id="btn-close-si-inspect-2" type="button">Close Diagnostics</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
